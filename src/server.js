@@ -1,48 +1,16 @@
 import express from 'express'
 import { config } from 'dotenv'
 
-config()
+import routes from './routes/index.routes.js';
 
-const serverPort = process.env.PORT || 3000
+config();
 
-const app = express()
-app.use(express.json())
+const serverPort = process.env.PORT || 3000;
 
-const personagens = [
-    {
-        id: 100,
-        nome: "Totoro",
-        vivo: true
-    },
-
-    {
-        id: 101,
-        nome: "Rapunzel",
-        vivo: "true"
-    },
-
-    {
-        id: 102,
-        nome: "Blue",
-        vivo: "true"
-    }
-]
-
-app.get("/", (req, res) => {
-    return res.status(200).send({ message: "Hello, world!"})
-
-})
-
-app.get("/2tds2", (req, res) => {
-    return res.status(200).send({ message: "Hello, world!"})
-
-})
-
-app.get("/personagens", (req, res) => {
-    return res.status(200).send( personagens )
-
-})
+const app = express();
+app.use(express.json());
+app.use(routes);
 
 app.listen(serverPort, () => {
-    console.log(`💖 Server started on http://localhost:${serverPort}`)
+    console.log(`💖 Server started on http://localhost:${serverPort}`);
 })
