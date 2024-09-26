@@ -1,6 +1,6 @@
-import { Router } from "express"
+import { Router } from "express";
 
-const emocoesRoutes = Router()
+const emocoesRoutes = Router();
 
 let emocoes = [
     {
@@ -14,7 +14,7 @@ let emocoes = [
         nome: "Alegria",
         cor: "Amarelo"
     },
-
+ 
     {
         id: 3,
         nome: "Raiva",
@@ -22,12 +22,12 @@ let emocoes = [
     }
 
 ]
-
+//Rota para buscar todas as emoções
 emocoesRoutes.get("/", (req, res) => {
     return res.status(200).send( emocoes )
 
 })
-
+//Criar nova emoção 
 emocoesRoutes.post("/", (req, res) => {
     const { nome, cor } = req.body
 
@@ -41,4 +41,43 @@ emocoesRoutes.post("/", (req, res) => {
     return res.status(201).send(novaEmocao);
 
 });
+//Rota para buscar uma emocao pelo id
+emocoesRoutes.get("/:id", (req, res) => {
+    const{id} = req.params;
+
+   // console.log(id);
+   const emocao = emocoes.find((emotion) => emotion.id == id)
+
+   if (!emocao) {
+    return res.status(404).send({
+        message: "Emoção não encontrada!",
+    });
+   }
+   return res.status(200).send({
+    message:"Emoção encontrada",
+    emocao,
+   });
+
+});
+
+emocoesRoutes.put("/:id", (req, res) => {
+    const{id} = req.params;
+
+    const emocao = emocoes.find((emotion) => emotion.id == id);
+
+    if (!emocao) {
+        return res.status(404).send({
+            message: "Emoção não encontrada!",
+        });
+    }
+    const { nome, cor } = req.body;
+    emocao.nome = nome;
+    emocao.cor = cor;
+
+    return res.status(200).send({
+        message:"Emoção atualizada!",
+        emocao,
+       });
+});
+
 export default emocoesRoutes;
